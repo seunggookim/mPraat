@@ -95,14 +95,14 @@ if strcmp(r, 'File type = "ooTextFile"')  % TextFile or shortTextFile
         frame = cell(1, nx);
         
         r = fgetl(fid);  % 11.
-        if isempty(strfind(r, 'frame []: '))
+        if isempty(strfind(r, 'frames []: '))
             fclose(fid);
             error('Unknown Pitch format.')
         end
 
         for I = 1: nx
             r = fgetl(fid);
-            if isempty(strfind(r, ['    frame [' num2str(I) ']:']))
+            if isempty(strfind(r, ['    frames [' num2str(I) ']:']))
                 fclose(fid);
                 error(['Unknown Pitch format, wrong frame id (' num2str(I) ').'])
             end
@@ -111,7 +111,7 @@ if strcmp(r, 'File type = "ooTextFile"')  % TextFile or shortTextFile
             r = fgetl(fid);
             frame{I}.nCandidates = getNumberInLine(r);
             r = fgetl(fid);
-            if isempty(strfind(r, '        candidate []: '))
+            if isempty(strfind(r, '        candidates []: '))
                 fclose(fid);
                 error('Unknown Pitch format.')
             end
@@ -119,9 +119,9 @@ if strcmp(r, 'File type = "ooTextFile"')  % TextFile or shortTextFile
             frame{I}.strength = nan(1, frame{I}.nCandidates);
             for Ic = 1: frame{I}.nCandidates
                 r = fgetl(fid);
-                if isempty(strfind(r, ['            candidate [' num2str(Ic) ']:']))
+                if isempty(strfind(r, ['            candidates [' num2str(Ic) ']:']))
                     fclose(fid);
-                    error(['Unknown Pitch format, wrong candidate nr. (' num2str(Ic) ') in frame id (' num2str(I) ').'])
+                    error(['Unknown Pitch format, wrong candidates nr. (' num2str(Ic) ') in frame id (' num2str(I) ').'])
                 end
                 r = fgetl(fid);
                 frame{I}.frequency(Ic) = getNumberInLine(r);
